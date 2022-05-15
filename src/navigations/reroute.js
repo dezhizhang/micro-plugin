@@ -1,8 +1,11 @@
+import { getAppChanges } from "../applications/app";
 import { started } from "../start";
 
 
 export function reroute() {
-    if(started) {
+    const { appsToLoad, appsToMount, appsToUnmount } = getAppChanges();
+    console.log(appsToLoad, appsToMount, appsToUnmount)
+    if (started) {
         // 
     } else {
         // 注册应用时需要预先加载
@@ -12,5 +15,5 @@ export function reroute() {
 
 
 function loadApps() {
-    
+
 }

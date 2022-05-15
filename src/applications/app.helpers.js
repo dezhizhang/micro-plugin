@@ -10,6 +10,8 @@ export const NOT_BOOTSTRAPPED = 'NOT_BOOTSTRAPPED';
 export const BOOTSTRAPPING = 'BOOTSTRAPPING';
 // 没有调用mount方法
 export const NOT_MOUNTED = 'NOT_MOUNTED';
+//加载应用
+export const MOUNTED = 'MOUNTED';
 // 正在挂载中
 export const MOUNTING = 'MOUNTING';
 // 更新中

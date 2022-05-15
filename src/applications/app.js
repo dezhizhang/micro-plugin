@@ -8,21 +8,54 @@
 */
 
 import { reroute } from "../navigations/reroute";
-import { NOT_LOADED } from "./app.helpers";
+import { BOOTSTRAPPING, LOADING_SOURCE_CODE, NOT_BOOTSTRAPPED, NOT_LOADED, NOT_MOUNTED, shouldBeActive, MOUNTED } from "./app.helpers";
 
 // 用来存放所有应用
-const app = [];
+const apps = [];
 
-export function registerApplication(appName,loadApp,activeWhen,customProps) {
-    app.push({
-        name:appName,
+export function registerApplication(appName, loadApp, activeWhen, customProps) {
+    apps.push({
+        name: appName,
         loadApp,
         activeWhen,
         customProps,
-        status:NOT_LOADED
+        status: NOT_LOADED
     });
 
     reroute();
 
+}
+
+export function getAppChanges() {
+    const appsToUnmount = []; // 要自裁的app
+    const appsToLoad = []; // 要加载的app
+    const appsToMount = []; // 需要挂载
+
+    apps.forEach(app => {
+        const appShouldBeActive = shouldBeActive(app);
+        switch (app.status) {
+            case NOT_LOADED:
+            case LOADING_SOURCE_CODE:
+                if (appShouldBeActive) {
+                    appsToLoad.push(app);
+                }
+                break;
+            case NOT_BOOTSTRAPPED:
+            case BOOTSTRAPPING:
+            case NOT_MOUNTED:
+                if (appShouldBeActive) {
+                    appsToMount.push(app);
+
+                }
+                break;
+            case MOUNTED:
+                if (!appShouldBeActive) {
+                    appsToUnmount.push(app);
+                }
+            default:
+
+        }
+    })
+    return { appsToUnmount, appsToLoad, appsToMount }
 }
 
