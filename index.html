@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hello</title>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script src="/lib/umd/index.js"></script>
+    <script>
+        microPlugin.registerApplication('app1',
+            async () => {
+                return {
+                    bootstrap: () => {
+                        console.log('bootstrap')
+                    },
+                    mount: async () => {
+                        console.log('mount')
+                    },
+                    unmount: async () => {
+                        console.log('unmount')
+                    }
+                }
+            },
+            location => location.hash.startsWidth('#/app1'),
+            {store:{name:'zf',age:10}}
+        )
+        
+        microPlugin.start();
+        
+    </script>
+</body>
+
+</html>
