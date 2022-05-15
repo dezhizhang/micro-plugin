@@ -1,4 +1,7 @@
 import { getAppChanges } from "../applications/app";
+import { toBootstrapPromise } from "../lifecycles/bootstrap";
+import { toLoadPromise } from "../lifecycles/load";
+import { toUnmountPromise } from '../lifecycles/unmount';
 import { started } from "../start";
 
 
@@ -6,14 +9,25 @@ export function reroute() {
     const { appsToLoad, appsToMount, appsToUnmount } = getAppChanges();
     console.log(appsToLoad, appsToMount, appsToUnmount)
     if (started) {
-        // 
+        // 装载
+        return performAppChanges();
     } else {
         // 注册应用时需要预先加载
         return loadApps();
     }
-}
 
+    async function loadApps() {
+        let apps = await Promise.all(appsToLoad.map(toLoadPromise));
+        console.log('apps',apps);
 
-function loadApps() {
+    }
 
+    async function performAppChanges() {
+       let unmountPromise = appsToUnmount.map(toUnmountPromise);
+       appsToLoad.map(async (app) => {
+           app = await toLoadPromise(app);
+           app = await toBootstrapPromise(app);
+           return await toMmountPromise(app)
+       })
+    }
 }
