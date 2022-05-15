@@ -9,12 +9,19 @@ function flattenFnArray(fns) {
 }
 
 export async function toLoadPromise(app) {
-    app.status = LOADING_SOURCE_CODE;
-    let { bootstrap, mount, unmount } = await app.loadApp(app.custormProps);
-
-    app.status = NOT_BOOTSTRAPPED;
-    app.bootstrap = flattenFnArray(bootstrap);
-    app.mount = flattenFnArray(mount);
-    app.unmount = flattenFnArray(unmount);
-    return app;
+    if(app.loadPromise) {
+        return app.loadPromise;
+    }
+    return (app.loadPromise) = Promise.resolve().then(async() => {
+        app.status = LOADING_SOURCE_CODE;
+        let { bootstrap, mount, unmount } = await app.loadApp(app.custormProps);
+    
+        app.status = NOT_BOOTSTRAPPED;
+        app.bootstrap = flattenFnArray(bootstrap);
+        app.mount = flattenFnArray(mount);
+        app.unmount = flattenFnArray(unmount);
+        delete app.loadPromise;
+        return app;
+    })
+   
 }

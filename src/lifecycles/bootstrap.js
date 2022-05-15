@@ -1,7 +1,7 @@
 import { BOOTSTRAPPING, NOT_BOOTSTRAPPED, NOT_MOUNTED } from "../applications/app.helpers";
 
 
-export function toBootstrapPromise(app) {
+export async function toBootstrapPromise(app) {
     if (app.status !== NOT_BOOTSTRAPPED) {
         return app;
     }
