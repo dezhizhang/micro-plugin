@@ -10,6 +10,8 @@
 
 <body>
     <div id="root"></div>
+    <a href="/#/app1">应用1</a>
+    <a href="/#/app2">应用2</a>
     <script src="/lib/umd/index.js"></script>
     <script>
         microPlugin.registerApplication('app1',
@@ -31,6 +33,10 @@
         )
         
         microPlugin.start();
+
+        window.addEventListener('hashchange',() => {
+            console.log('hello');
+        })
         
     </script>
 </body>

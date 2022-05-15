@@ -6,6 +6,10 @@ import { toUnmountPromise } from '../lifecycles/unmount';
 import { started } from "../start";
 
 
+import './navigator-event';
+
+
+
 export function reroute() {
     const { appsToLoad, appsToMount, appsToUnmount } = getAppChanges();
     console.log(appsToLoad, appsToMount, appsToUnmount)
